@@ -1,0 +1,46 @@
+{{define "content"}}
+<div class="page-head">
+  <div><h1>Backends</h1><p>Manage WebSocket routes sent through this gateway.</p></div>
+</div>
+
+<section class="panel">
+<h2>Add backend</h2>
+<form method="post" action="/backends" class="form-grid">
+  <label>Name<input name="name" placeholder="Germany 1" required></label>
+  <label>Country<input name="country" placeholder="Germany" required></label>
+  <label>Backend IP<input name="ip" placeholder="203.0.113.10" inputmode="decimal" required></label>
+  <label>Port<input name="port" type="number" min="1" max="65535" value="10001" required></label>
+  <label>WebSocket path<input name="path" placeholder="/de-a8Kp72Lm" required></label>
+  <div class="form-action"><button type="submit">Add backend</button></div>
+</form>
+</section>
+
+<section class="panel">
+<h2>Existing backends</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Name</th><th>Country</th><th>Target</th><th>Path</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+{{range .Backends}}
+<tr>
+  <td>{{.Name}}</td>
+  <td>{{.Country}}</td>
+  <td>{{.IP}}:{{.Port}}</td>
+  <td><code>{{.Path}}</code></td>
+  <td><span class="badge {{if .Enabled}}on{{else}}off{{end}}">{{if .Enabled}}Enabled{{else}}Disabled{{end}}</span></td>
+  <td>
+    <div class="actions">
+      <a class="button secondary" href="/backends/{{.ID}}/edit">Edit</a>
+      <form method="post" action="/backends/{{.ID}}/toggle"><button class="secondary" type="submit">Toggle</button></form>
+      <form method="post" action="/backends/{{.ID}}/delete" data-confirm="Delete this backend?"><button class="danger" type="submit">Delete</button></form>
+    </div>
+  </td>
+</tr>
+{{else}}
+<tr><td colspan="6">No backends added yet.</td></tr>
+{{end}}
+</tbody>
+</table>
+</div>
+</section>
+{{end}}
