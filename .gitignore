@@ -1,5 +1,0 @@
-userrtm-gateway
-dist/
-*.db
-*.log
-.env
