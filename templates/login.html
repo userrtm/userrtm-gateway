@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UserrTM Gateway Login</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login-body">
+<form class="login-card" method="post" action="/login">
+  <h1>UserrTM Gateway</h1>
+  <p>Gateway management panel</p>
+  {{if .Error}}<div class="notice error">{{.Error}}</div>{{end}}
+  <label>Username<input name="username" autocomplete="username" required></label>
+  <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+  <button type="submit">Sign in</button>
+</form>
+</body>
+</html>

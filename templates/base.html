@@ -1,0 +1,30 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}} · UserrTM Gateway</title>
+<link rel="stylesheet" href="/static/app.css">
+<script defer src="/static/app.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">UserrTM Gateway</a>
+  <button class="menu-button" type="button" aria-label="Open menu" data-menu-button>☰</button>
+  <nav data-menu>
+    <a class="{{if eq .Active "dashboard"}}active{{end}}" href="/">Dashboard</a>
+    <a class="{{if eq .Active "backends"}}active{{end}}" href="/backends">Backends</a>
+    <a class="{{if eq .Active "bulk"}}active{{end}}" href="/bulk">Bulk</a>
+    <a class="{{if eq .Active "settings"}}active{{end}}" href="/settings">Settings</a>
+    <form method="post" action="/logout"><button class="nav-button" type="submit">Logout</button></form>
+  </nav>
+</header>
+<main>
+{{if .Message}}<div class="notice success">{{.Message}}</div>{{end}}
+{{if .Error}}<div class="notice error">{{.Error}}</div>{{end}}
+{{template "content" .}}
+</main>
+</body>
+</html>
+{{end}}
