@@ -1,0 +1,31 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Build
+        run: |
+          mkdir -p dist/package/templates dist/package/static
+          CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.arch }} go build -mod=mod -trimpath -ldflags="-s -w" -o dist/package/userrtm-gateway .
+          cp templates/*.html dist/package/templates/
+          cp static/* dist/package/static/
+          tar -C dist/package -czf dist/userrtm-gateway-linux-${{ matrix.arch }}.tar.gz .
+          sha256sum dist/userrtm-gateway-linux-${{ matrix.arch }}.tar.gz > dist/userrtm-gateway-linux-${{ matrix.arch }}.tar.gz.sha256
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/userrtm-gateway-linux-${{ matrix.arch }}.tar.gz
+            dist/userrtm-gateway-linux-${{ matrix.arch }}.tar.gz.sha256
